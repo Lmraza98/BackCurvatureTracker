@@ -79,6 +79,12 @@ public class LoginActivity extends AppCompatActivity {
     {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            Intent i = new Intent(this, MainActivity.class);
+
+            i.putExtra("GOOGLE", account);
+            startActivity(i);
+
         } catch(ApiException e )
         {
             Log.w("TAG", "signInResult:Failed code=" + e.getStatusCode());
