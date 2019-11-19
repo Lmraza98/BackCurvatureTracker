@@ -8,29 +8,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:gravity="center"
+        android:layout_above="@id/input_group"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/input_group">
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="-2dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="27dp"
+            android:layout_height="276dp"
             android:fontFamily="sans-serif"
             android:text="SPINE"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="36sp"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/user_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="SIGN IN"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"/>
+            android:textAllCaps="false"
+            android:textColor="#FE5295"
+            android:textSize="17sp" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/input_group"
@@ -43,34 +51,6 @@
         android:layout_alignParentBottom="true"
         android:gravity="center">
 
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_top"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            android:padding="15dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_bottom"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="15dp" />
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:text="SIGN IN"
-            android:textAllCaps="false"
-            android:textColor="#FE5295"
-            android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/signUp_text"

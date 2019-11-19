@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "2702035422",
+    "firebase_url": "https://spine-73b82.firebaseio.com",
+    "project_id": "spine-73b82",
+    "storage_bucket": "spine-73b82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2702035422:android:ac4045eed7e7767e8f754f",
+        "android_client_info": {
+          "package_name": "mobilehealth.wit.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2702035422-imc2ame0kul4resf514mprb9qegupvt7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mobilehealth.wit.myapplication",
+            "certificate_hash": "f04cef0380a91b647f35cc89b350ebece874dd5d"
+          }
+        },
+        {
+          "client_id": "2702035422-2e613jra36bri7ark2oqhqorrq3t5hh8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC15jl8Bv8aiwQK-PNmDQdn9UEp5FkHxlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2702035422-2e613jra36bri7ark2oqhqorrq3t5hh8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
