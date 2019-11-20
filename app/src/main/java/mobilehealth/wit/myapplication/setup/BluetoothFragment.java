@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 import mobilehealth.wit.myapplication.R;
+import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +28,7 @@ import mobilehealth.wit.myapplication.R;
  * Use the {@link BluetoothFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BluetoothFragment extends Fragment {
+public class BluetoothFragment extends Fragment implements OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,26 +44,9 @@ public class BluetoothFragment extends Fragment {
     private BluetoothAdapter mBluetoothAdapter;
 
     public BluetoothFragment() {
-        // Required empty public constructor
+        //
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BluetoothFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BluetoothFragment newInstance(String param1, String param2) {
-        BluetoothFragment fragment = new BluetoothFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,17 +62,24 @@ public class BluetoothFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        listView = (ListView) getView().findViewById(R.id.listView);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothAdapter.startDiscovery();
+//
+//            listView = getView().findViewById(R.id.listView);
+//
+//            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//            mBluetoothAdapter.startDiscovery();
+//
+//            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+//            getActivity().registerReceiver(mReceiver, filter);
 
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        getActivity().registerReceiver(mReceiver, filter);
 
+            // Inflate the layout for this fragment
+            final View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
+            return view;
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bluetooth, container, false);
+//            Log.println(1, "onCreateView", e.toString());
+//            Log.e("TAG", "onCreateView", e);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -130,18 +120,8 @@ public class BluetoothFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -21,4 +21,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="pair_your_device">Pair Your Device</string>
+    <string name="next"><![CDATA[NEXT >]]></string>
+    <string name="fragment_text">fragment_text</string>
+
 </resources>

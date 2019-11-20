@@ -1,6 +1,7 @@
 package mobilehealth.wit.myapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
 
-public class LoginActivity extends AppCompatActivity {
+
+public class LoginActivity extends AppCompatActivity implements OnFragmentInteractionListener{
    private FirebaseAuth auth;
    private int RC_SIGN_IN = 1;
 
@@ -79,11 +82,24 @@ public class LoginActivity extends AppCompatActivity {
     {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // Signed in successfully, show authenticated UI.
-            Intent i = new Intent(this, MainActivity.class);
+            //Signed in successfully, show authenticated UI.
+            Intent i = new Intent(this, SetupActivity.class);
 
             i.putExtra("GOOGLE", account);
             startActivity(i);
+
+
+
+//            final SharedPreferences preferences = this.getSharedPreferences("default_prefs", 0);
+//            final boolean firstLoad = !preferences.getBoolean("completedSetup", false);
+//            if(firstLoad) {
+//                final Intent intent = new Intent(this, SetupActivity.class);
+//                startActivity(intent);
+//            } else {
+//                final Intent intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//            finish();
 
         } catch(ApiException e )
         {
@@ -97,6 +113,10 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //UPDATE UI
         //updateUI(account);
+    }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 }
