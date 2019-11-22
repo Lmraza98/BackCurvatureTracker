@@ -12,22 +12,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SetupActivity"></activity>
+        <activity
+            android:name=".SetupActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity
             android:name=".RegistrationActivity"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".StartActivity"
+            android:windowSoftInputMode="adjustResize">
+
         </activity>
     </application>
 

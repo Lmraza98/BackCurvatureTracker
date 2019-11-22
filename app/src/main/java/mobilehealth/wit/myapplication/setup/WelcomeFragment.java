@@ -1,5 +1,6 @@
 package mobilehealth.wit.myapplication.setup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +11,9 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import mobilehealth.wit.myapplication.R;
 import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CalibrateFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CalibrateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CalibrateFragment extends Fragment implements OnFragmentInteractionListener {
+
+@SuppressLint("ValidFragment")
+public class WelcomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,9 +25,10 @@ public class CalibrateFragment extends Fragment implements OnFragmentInteraction
 
     private OnFragmentInteractionListener mListener;
 
-    public CalibrateFragment() {
-        // Required empty public constructor
-    }
+
+    public WelcomeFragment(){}
+
+
 
 
     @Override
@@ -49,7 +45,7 @@ public class CalibrateFragment extends Fragment implements OnFragmentInteraction
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-            return inflater.inflate(R.layout.fragment_calibrate, container, false);
+        return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -76,8 +72,4 @@ public class CalibrateFragment extends Fragment implements OnFragmentInteraction
         mListener = null;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }

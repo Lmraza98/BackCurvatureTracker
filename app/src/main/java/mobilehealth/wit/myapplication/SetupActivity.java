@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
 import mobilehealth.wit.myapplication.setup.BluetoothFragment;
 import mobilehealth.wit.myapplication.setup.CalibrateFragment;
+import mobilehealth.wit.myapplication.setup.WelcomeFragment;
 
 public class SetupActivity extends ActivityWrapper implements OnFragmentInteractionListener {
 
@@ -25,11 +26,19 @@ public class SetupActivity extends ActivityWrapper implements OnFragmentInteract
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_setup);
+
+        Fragment frag = new WelcomeFragment();
+        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+        trans.replace(R.id.setup, frag);
+        trans.commit();
+
         final Button nextButton = findViewById(R.id.nextButton);
         final List<Fragment> fragmentList = new ArrayList<>();
+        //fragmentList.add(new WelcomeFragment());
         fragmentList.add(new BluetoothFragment());
-        fragmentList.add(new CalibrateFragment(this));
+        fragmentList.add(new CalibrateFragment());
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +53,7 @@ public class SetupActivity extends ActivityWrapper implements OnFragmentInteract
                     final Fragment currentFragment = fragmentList.get(currentLocation);
                     final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.setup, currentFragment);
+
                     transaction.addToBackStack(null);
                     currentLocation++;
                     transaction.commit();

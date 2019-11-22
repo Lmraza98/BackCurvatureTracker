@@ -1,6 +1,7 @@
 package mobilehealth.wit.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentIntera
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-       // auth = FirebaseAuth.getInstance();
+        // auth = FirebaseAuth.getInstance();
 
 
         TextView signUp_text = findViewById(R.id.signUp_text);
@@ -90,16 +91,16 @@ public class LoginActivity extends AppCompatActivity implements OnFragmentIntera
 
 
 
-//            final SharedPreferences preferences = this.getSharedPreferences("default_prefs", 0);
-//            final boolean firstLoad = !preferences.getBoolean("completedSetup", false);
-//            if(firstLoad) {
-//                final Intent intent = new Intent(this, SetupActivity.class);
-//                startActivity(intent);
-//            } else {
-//                final Intent intent = new Intent(this, MainActivity.class);
-//                startActivity(intent);
-//            }
-//            finish();
+            final SharedPreferences preferences = this.getSharedPreferences("default_prefs", 0);
+            final boolean firstLoad = !preferences.getBoolean("completedSetup", false);
+            if(firstLoad) {
+                final Intent intent = new Intent(this, SetupActivity.class);
+                startActivity(intent);
+            } else {
+                final Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            finish();
 
         } catch(ApiException e )
         {

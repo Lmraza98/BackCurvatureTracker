@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context="mobilehealth.wit.myapplication.SetupActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/setup"
-        android:name="mobilehealth.wit.myapplication.setup.BluetoothFragment"
+        android:name="mobilehealth.wit.myapplication.setup.WelcomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,4 +28,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
