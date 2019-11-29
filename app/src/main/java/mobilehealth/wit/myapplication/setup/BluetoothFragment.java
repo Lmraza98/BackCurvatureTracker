@@ -1,48 +1,19 @@
 package mobilehealth.wit.myapplication.setup;
 
 
-import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import androidx.fragment.app.Fragment;
-import mobilehealth.wit.myapplication.R;
-import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
-
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothAdapter.LeScanCallback;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -55,15 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BluetoothFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BluetoothFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class BluetoothFragment extends Fragment implements OnFragmentInteractionListener {
+import androidx.fragment.app.Fragment;
+import mobilehealth.wit.myapplication.R;
+
+public class BluetoothFragment extends Fragment {
 
     // UUIDs for UART service and associated characteristics.
     public static UUID UART_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
@@ -73,12 +39,27 @@ public class BluetoothFragment extends Fragment implements OnFragmentInteraction
     // UUID for the BTLE client characteristic which is necessary for notifications.
     public static UUID CLIENT_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
+    // UI elements
+    private TextView messages;
+    private EditText input;
+
+    private Button setoutput;
+    private Button switchon;
+    private Button switchoff;
+
+    private String output;
+
+    //private Button temperature;
+
+    private ScrollView scroll;
+
     // BTLE state
     private BluetoothAdapter adapter;
     private BluetoothGatt gatt;
     private BluetoothGattCharacteristic tx;
     private BluetoothGattCharacteristic rx;
 
+    // Main BTLE device callback where much of the logic occurs.
     private BluetoothGattCallback callback = new BluetoothGattCallback() {
         // Called whenever the device connection state changes, i.e. from disconnected to connected.
         @Override
@@ -150,8 +131,212 @@ public class BluetoothFragment extends Fragment implements OnFragmentInteraction
             */
         }
     };
+
+    // BTLE device scanning callback.
+
+
+  //scanCall
+
+    // BTLE device scanning callback.
+    private final ScanCallback scanCallback = new ScanCallback() {
+        @Override
+        public void onBatchScanResults(List<ScanResult> results)
+        {
+            super.onBatchScanResults(results);
+            for(int i = 0; i < results.size(); i++)
+            {
+                System.out.println(results.get(i));
+            }
+        }
+
+        // Called when a device is found.
+        @Override
+        public void onScanFailed(int errorCode) {
+            super.onScanFailed(errorCode);
+            System.out.println("ERROR CODE: " + errorCode);
+        }
+
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+            System.out.println("CallbackType" + callbackType);
+            System.out.println("RESULT" + result);
+            writeLine("Found device: " + result.getDevice().getAddress());
+            BluetoothDevice device = result.getDevice();
+
+            if (device.getName() == "my_arduino") {
+                adapter.getBluetoothLeScanner().stopScan(scanCallback);
+                writeLine("Found UART service!");
+                gatt = device.connectGatt(getContext().getApplicationContext(), false, callback);
+            }
+        }
+//        @Override
+//        public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
+//
+//            //Log.v("myApp", "onLeScan() is called");
+//
+//
+//            // Check if the device has the UART service.
+//            if (parseUUIDs(bytes).contains(UART_UUID)) {
+//                // Found a device, stop the scan.
+//                adapter.stopLeScan(scanCallback);
+//                writeLine("Found UART service!");
+//                // Connect to the device.
+//                // Control flow will now go to the callback functions when BTLE events occur.
+//                gatt = bluetoothDevice.connectGatt(getContext().getApplicationContext(), false, callback);
+//            }
+//        }
+    };
+
+
+    // OnCreate, called once to initialize the activity.
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //setContentView(R.layout.activity_main);
+
+        // Grab references to UI elements.
+        //dataOutput = (TextView) findViewById(R.id.dataOutputTextView);
+
+
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        //adapter = BluetoothAdapter.getDefaultAdapter();
+        View root = inflater.inflate(R.layout.fragment_bluetooth, null);
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+
+
+        messages = (TextView) getView().findViewById(R.id.messages);
+        input = (EditText) getView().findViewById(R.id.input);
+
+        adapter = BluetoothAdapter.getDefaultAdapter();
+
+
+        setoutput = (Button) getView().findViewById(R.id.setToOutputBtn);
+        switchon = (Button) getView().findViewById(R.id.switchOnBtn);
+        switchoff = (Button) getView().findViewById(R.id.switchOffBtn);
+
+        //temperature = (Button) findViewById(R.id.temperatureBtn);
+
+        if(adapter == null){
+            Log.v("myApp","Bluetooth is not support.");
+        }else{
+            Log.v("myApp", "Bluetooth is supported.");
+        }
+
+
+        scroll = (ScrollView) getView().findViewById(R.id.ctScrollView);
+
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+
+        // Set Commands to be send to Bluetooth Module
+
+        setoutput.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String setOutputMessage = "/mode/7/o /";
+                tx.setValue(setOutputMessage.getBytes(Charset.forName("UTF-8")));
+                if (gatt.writeCharacteristic(tx)) {
+                    writeLine("Sent: " + setOutputMessage);
+                }
+                else {
+                    writeLine("Couldn't write TX characteristic!");
+                }
+
+            }
+        });
+
+        switchon.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String switchOnMessage = "/digital/7/1 /";
+                tx.setValue(switchOnMessage.getBytes(Charset.forName("UTF-8")));
+                if (gatt.writeCharacteristic(tx)) {
+                    writeLine("Sent: " + switchOnMessage);
+                }
+                else {
+                    writeLine("Couldn't write TX characteristic!");
+                }
+            }
+        });
+
+        switchoff.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String switchOffMessage = "/digital/7/0 /";
+                tx.setValue(switchOffMessage.getBytes(Charset.forName("UTF-8")));
+                if (gatt.writeCharacteristic(tx)) {
+                    writeLine("Sent: " + switchOffMessage);
+                }
+                else {
+                    writeLine("Couldn't write TX characteristic!");
+                }
+            }
+        });
+
+
+
+    }
+
+    // OnResume, called right before UI is displayed.  Start the BTLE connection.
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Scan for all BTLE devices.
+        // The first one with the UART service will be chosen--see the code in the scanCallback.
+        writeLine("Scanning for devices...");
+        adapter.getBluetoothLeScanner().startScan(scanCallback);
+
+        Log.v("myApp", "onResume called");
+    }
+
+    // OnStop, called right before the activity loses foreground focus.  Close the BTLE connection.
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (gatt != null) {
+            // For better reliability be careful to disconnect and close the connection.
+            gatt.disconnect();
+            gatt.close();
+            gatt = null;
+            tx = null;
+            rx = null;
+        }
+    }
+
+    // Handler for mouse click on the send button.
+    public void sendClick(View view) {
+        String message = input.getText().toString();
+        if (tx == null || message == null || message.isEmpty()) {
+            // Do nothing if there is no device or message to send.
+            return;
+        }
+        // Update TX characteristic value.  Note the setValue overload that takes a byte array must be used.
+        tx.setValue(message.getBytes(Charset.forName("UTF-8")));
+
+        if (gatt.writeCharacteristic(tx)) {
+            writeLine("Sent: " + message);
+        }
+        else {
+            writeLine("Couldn't write TX characteristic!");
+        }
+    }
+
+    // Write some text to the messages text view.
+    // Care is taken to do this on the main UI thread so writeLine can be called
+    // from any thread (like the BTLE callback).
     private void writeLine(final CharSequence text) {
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 messages.append(text);
@@ -161,6 +346,10 @@ public class BluetoothFragment extends Fragment implements OnFragmentInteraction
             }
         });
     }
+
+    // Filtering by custom UUID is broken in Android 4.3 and 4.4, see:
+    //   http://stackoverflow.com/questions/18019161/startlescan-with-128-bit-uuids-doesnt-work-on-native-android-ble-implementation?noredirect=1#comment27879874_18019161
+    // This is a workaround function from the SO thread to manually parse advertisement data.
     private List<UUID> parseUUIDs(final byte[] advertisedData) {
         List<UUID> uuids = new ArrayList<UUID>();
 
@@ -210,121 +399,6 @@ public class BluetoothFragment extends Fragment implements OnFragmentInteraction
         }
         return uuids;
     }
-    // BTLE device scanning callback.
-    private LeScanCallback scanCallback = new LeScanCallback() {
-        // Called when a device is found.
-        @Override
-        public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
 
-            //Log.v("myApp", "onLeScan() is called");
-            //writeLine("Found device: " + bluetoothDevice.getAddress());
-
-            // Check if the device has the UART service.
-            if (parseUUIDs(bytes).contains(UART_UUID)) {
-                // Found a device, stop the scan.
-                adapter.stopLeScan(scanCallback);
-                writeLine("Found UART service!");
-                // Connect to the device.
-                // Control flow will now go to the callback functions when BTLE events occur.
-                gatt = bluetoothDevice.connectGatt(getApplicationContext(), false, callback);
-            }
-        }
-    };
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-    private ListView listView;
-    private ArrayList<String> mDeviceList = new ArrayList<String>();
-    private BluetoothAdapter mBluetoothAdapter;
-
-
-
-    public BluetoothFragment() {
-        //
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
-//
-//            listView = getView().findViewById(R.id.listView);
-//
-//            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//            mBluetoothAdapter.startDiscovery();
-//
-//            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-//            getActivity().registerReceiver(mReceiver, filter);
-
-
-            // Inflate the layout for this fragment
-            final View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
-            return view;
-
-//            Log.println(1, "onCreateView", e.toString());
-//            Log.e("TAG", "onCreateView", e);
-
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent
-                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mDeviceList.add(device.getName() + "\n" + device.getAddress());
-                Log.i("BT", device.getName() + "\n" + device.getAddress());
-                listView.setAdapter(new ArrayAdapter<String>(context,
-                        android.R.layout.simple_list_item_1, mDeviceList));
-            }
-        }
-    };
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
+
