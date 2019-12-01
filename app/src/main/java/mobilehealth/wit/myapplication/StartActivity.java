@@ -17,7 +17,7 @@ public class StartActivity extends AppCompatActivity {
         final SharedPreferences preferences = this.getSharedPreferences("default_prefs", 0);
         final boolean firstLoad = !preferences.getBoolean("completedSetup", false);
         if(firstLoad) {
-            final Intent intent = new Intent(this, SetupActivity.class);
+            final Intent intent = new Intent(this, BluetoothActivity.class);
             startActivity(intent);
         } else {
             final Intent intent = new Intent(this, MainActivity.class);

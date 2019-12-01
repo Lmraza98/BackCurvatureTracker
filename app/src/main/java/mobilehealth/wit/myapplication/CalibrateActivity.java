@@ -1,4 +1,4 @@
-package mobilehealth.wit.myapplication.setup;
+package mobilehealth.wit.myapplication;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,17 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import mobilehealth.wit.myapplication.R;
 import mobilehealth.wit.myapplication.fragments.OnFragmentInteractionListener;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CalibrateFragment.OnFragmentInteractionListener} interface
+ * {@link CalibrateActivity.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CalibrateFragment#newInstance} factory method to
+ * Use the {@link CalibrateActivity#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalibrateFragment extends Fragment implements OnFragmentInteractionListener {
+public class CalibrateActivity extends Fragment implements OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +29,7 @@ public class CalibrateFragment extends Fragment implements OnFragmentInteraction
 
     private OnFragmentInteractionListener mListener;
 
-    public CalibrateFragment() {
+    public CalibrateActivity() {
         // Required empty public constructor
     }
 

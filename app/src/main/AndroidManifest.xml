@@ -22,13 +22,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SetupActivity"
+            android:name=".BluetoothActivity"
             android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".RegistrationActivity"
+        android:name=".RegistrationActivity"
+        android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CalibrateActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".LoginActivity"
